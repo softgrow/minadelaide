@@ -1,0 +1,32 @@
+DATA_DIR=datadir # Scratch directory to manipulate data in
+MODEL_URI="http://opendata.adelaidecitycouncil.com/3D_Model/3D CITY BASE MODEL BLOCKS no textures.zip"
+if [ ! -d $DATA_DIR ]
+  then 
+    mkdir -p $DATA_DIR
+fi
+cd $DATA_DIR
+BASE_ZIP=notext.zip
+if [ ! -s $BASE_ZIP ]
+  then
+    wget -O $BASE_ZIP "$MODEL_URI"
+fi
+# We've got the data so now we unpack it and do things
+unzip -d model_unpack $BASE_ZIP
+# select the bit we are interested in
+# convert from 3ds to OBJ
+# convert to schematic
+http://www.minecraftforum.net/forums/mapping-and-modding/mapping-and-modding-tutorials/1571160-tut-how-to-convert-3d-models-into-mc-schematics
+./binvox *.obj -down -down -t schematic -bi 57
+# use MCEDIT to get the file in
+http://www.mcedit-unified.net
+Run MCEDit
+Create a flat not survival world in this directory
+Change to camera view
+press 6 to import schematic
+press R to roll to correct orientation
+press something back to menu
+press import
+press deslect
+save the world
+
+# Import into Minecraft
