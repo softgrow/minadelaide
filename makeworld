@@ -20,6 +20,7 @@ for THIS_OBJ in CBAB2_E/CBAB2_E CBAB2_W/CBAB2_W \
   do
     /Applications/blender.app/Contents/MacOS/blender -b ../dummy.blend -P ../blender_3ds2obj.py -- model_unpack/$THIS_OBJ.3ds
     BLOCK_ID=1 # Stone
+    # Calculate the size of each object in meters
     MAXDIM=424
     case $THIS_OBJ in  
       CBAB2_E/CBAB2_E) MAXDIM=423 ;;
