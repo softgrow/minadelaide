@@ -8,6 +8,8 @@ Tools and scripts to transform 3DS data from the Adelaide City Council at https:
 ```
  $ ./makeworld
 ```
+* If you cant wait there are some schematics ready to insert in the objs directory
+* If you're even more impatient, there is a premade world in save300.zip
 
 # Prerequesites
 * [Blender](https://www.blender.org/) for transforming 3DS into Wavefront OBJ
