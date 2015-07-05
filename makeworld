@@ -11,22 +11,48 @@ if [ ! -s $BASE_ZIP ]
     wget -O $BASE_ZIP "$MODEL_URI"
 fi
 # We've got the data so now we unpack it and do things
-unzip -d model_unpack $BASE_ZIP
+unzip -n -d model_unpack $BASE_ZIP
 # select the bit we are interested in
 # convert from 3ds to OBJ
-# convert to schematic
-http://www.minecraftforum.net/forums/mapping-and-modding/mapping-and-modding-tutorials/1571160-tut-how-to-convert-3d-models-into-mc-schematics
-./binvox *.obj -down -down -t schematic -bi 57
-# use MCEDIT to get the file in
-http://www.mcedit-unified.net
-Run MCEDit
-Create a flat not survival world in this directory
-Change to camera view
-press 6 to import schematic
-press R to roll to correct orientation
-press something back to menu
-press import
-press deslect
-save the world
+for THIS_OBJ in CBAB2_E/CBAB2_E CBAB2_W/CBAB2_W \
+  CBAA2_1/CBAA2_1 CBAA2_2/CBAA2_2 CBAA2_3/CBAA2_3 \
+   Block6a/6a Rundle_Fountain/Rundle_Fountain balls/Balls
+  do
+    /Applications/blender.app/Contents/MacOS/blender -b ../dummy.blend -P ../blender_3ds2obj.py -- model_unpack/$THIS_OBJ.3ds
+    BLOCK_ID=1 # Stone
+    MAXDIM=424
+    case $THIS_OBJ in  
+      CBAB2_E/CBAB2_E) MAXDIM=423 ;;
+      CBAB2_W/CBAB2_W) MAXDIM=198 ;;
+      CBAA2_1/CBAA2_1) MAXDIM=260 ;;
+      CBAA2_2/CBAA2_2) MAXDIM=164 ;; 
+      CBAA2_3/CBAA2_3) MAXDIM=58 ;;
+      Block6a/6a) MAXDIM=306 ;;
+      Rundle_Fountain/Rundle_Fountain) MAXDIM=5;;
+      balls/Balls) MAXDIM=4 ;;
+      *) MAXDIM=100 ;;
+    esac
+    /Applications/blender.app/Contents/MacOS/blender -b ../dummy.blend -P ../blender_3ds2obj.py -- model_unpack/$THIS_OBJ.3ds
 
-# Import into Minecraft
+    ESAC
+    ../binvox model_unpack/$THIS_OBJ.obj -d $MAXDIM -rotz -t schematic -bi $BLOCK_ID
+  done
+# http://www.minecraftforum.net/forums/mapping-and-modding/mapping-and-modding-tutorials/1571160-tut-how-to-convert-3d-models-into-mc-schematics
+# -down -down reduces 127m to 20 blocks so remove entirely
+# at 1:1 does 127.4m gives 77 blocks
+# scale 424 from 256 to get right size
+# rotz puts things on the right plane but it still
+# neeeds a mirror to get things right
+# havent checked NSEW
+# use MCEDIT to get the file in
+echo Run MCEdit http://www.mcedit-unified.net
+echo Create a flat not survival world in this directory
+echo Change to camera view
+echo  press 6 to import schematic
+echo press G to mirror the orientation otherwise back to front
+echo dont copy air or water or biomes
+echo Nudge it into the right position
+echo Press Import
+echo Press deslect
+echo Save the world!
+echo Now copy across your wolrd into Minecraft and manually add the history signs
